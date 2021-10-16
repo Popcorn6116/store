@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mhj.store.mapper.UserMapper">
+    <!--Complete the mapping of different names in the data table and user class-->
+    <resultMap id="UserElementMap" type="com.mhj.store.element.User">
+        <!--primary key most have-->
+        <id column="uid" property="uid"></id>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="created_user" property="createdUser"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="modified_user" property="modifiedUser"></result>
+        <result column="modified_time" property="modifiedTime"></result>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="uid">
+        INSERT INTO t_user(
+            username,
+            password,
+            salt,
+            phone,
+            email,
+            avatar,
+            gender,
+            is_delete,
+            created_user,
+            created_time,
+            modified_user,
+            modified_time
+        )VALUES (
+            #{username},
+            #{password},
+            #{salt},
+            #{phone},
+            #{email},
+            #{avatar},
+            #{gender},
+            #{isDelete},
+            #{createdUser},
+            #{createdTime},
+            #{modifiedUser},
+            #{modifiedTime}
+        )
+    </insert>
+
+    <select id="findByUsername" resultMap="UserElementMap">
+        SELECT * FROM t_user WHERE username = #{username}
+    </select>
+</mapper>
