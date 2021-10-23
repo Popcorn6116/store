@@ -42,4 +42,27 @@ public class UserServiceTests {
         System.out.println(user);
     }
 
+    @Test
+    public void changePassword(){
+        userService.changePassword(17,"test07","123","321");
+    }
+
+    @Test
+    public void getByUid(){
+        System.err.println(userService.getByUid(17));
+    }
+
+    @Test
+    public void changeInfo(){
+        User user = new User();
+        user.setPhone("13838383838");
+        user.setEmail(("emial@qq.cpm"));
+        user.setGender(0);
+        userService.changeInfo(17,"cyj07",user);
+    }
+
+    @Test
+    public void changeAvatar(){
+        userService.changeAvatar(17,"/upload/test.png","baba");
+    }
 }

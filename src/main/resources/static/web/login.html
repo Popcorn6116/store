@@ -159,6 +159,8 @@
 
 						//jump to index.html
 						location.href = "../web/index.html";
+						$.cookie("avatar", json.data.avatar, {expires: 7});
+						console.log(json.data.avatar);
 					},
 					error: function (xhr) {
 							alert("An unknown exception occurred during login!" + xhr.message)

@@ -19,8 +19,10 @@
 		<link rel="stylesheet" type="text/css" href="../css/layout.css" />
 		<link rel="stylesheet" type="text/css" href="../css/top.css" />
 		<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+		<!--
 		<script type="text/javascript" src="../js/distpicker.data.js"></script>
 		<script type="text/javascript" src="../js/distpicker.js"></script>
+		-->
 	</head>
 
 	<body>
@@ -287,6 +289,123 @@
 			</div>
 		</footer>
 		<!--页脚结束-->
+		<script type="text/javascript">
+			let defaultOption = "<option value='0'>Please Choose</option>";
+			$(document).ready(function () {
+				showProvinceList();
+				$("#province-list").append(defaultOption);
+				$("#city-list").append(defaultOption);
+				$("#area-list").append(defaultOption);
+			});
+
+			$("#city-list").change(function () {
+				$("#area-list").empty();
+				$("#area-list").append(defaultOption);
+
+				let parent = $("#city-list").val();
+
+				if(parent == 0){
+					return;
+				}
+
+				$.ajax({
+					url: "/districts",
+					type: "GET",
+					data: "parent=" + parent,
+					dataType: "JSON",
+					success: function (json) {
+						if(json.state == 200){
+							let list = json.data;
+							for(let i=0; i<list.length; i++){
+								let opt = "<option value='" + list[i].code + "'>" + list[i].name +"</option>";
+								$("#area-list").append(opt);
+							}
+						} else {
+							alert("Message loading failure!");
+						}
+					},
+					error: function (xhr) {
+						alert("An unknown exception occurred！" + xhr.message);
+					}
+				});
+			});
+
+			$("#province-list").change(function () {
+				$("#city-list").empty();
+				$("#area-list").empty();
+				$("#city-list").append(defaultOption);
+				$("#area-list").append(defaultOption);
+
+				let parent = $("#province-list").val();
+
+				if(parent == 0){
+					return;
+				}
+
+				$.ajax({
+					url: "/districts",
+					type: "GET",
+					data: "parent=" + parent,
+					dataType: "JSON",
+					success: function (json) {
+						if(json.state == 200){
+							let list = json.data;
+							for(let i=0; i<list.length; i++){
+								let opt = "<option value='" + list[i].code + "'>" + list[i].name +"</option>";
+								$("#city-list").append(opt);
+							}
+						} else {
+							alert("Message loading failure!");
+						}
+					},
+					error: function (xhr) {
+						alert("An unknown exception occurred！" + xhr.message);
+					}
+				});
+			});
+
+			function showProvinceList() {
+				$.ajax({
+					url: "/districts",
+					type: "POST",
+					data: "parent=86",
+					dataType: "JSON",
+					success: function (json) {
+						if(json.state == 200){
+							let list = json.data;
+							for(let i=0; i<list.length; i++){
+								let opt = "<option value='" + list[i].code + "'>" + list[i].name +"</option>";
+								$("#province-list").append(opt);
+							}
+						} else {
+							alert("Message loading failure!");
+						}
+					},
+					error: function (xhr) {
+						alert("An unknown exception occurred！" + xhr.message);
+					}
+				});
+			}
+
+			$("#btn-add-new-address").click(function () {
+				$.ajax({
+					url: "/addresses/add_new_address",
+					type: "POST",
+					data: $("#form-add-new-address").serialize(),
+					dataType: "JSON",
+					success: function (json) {
+						if(json.state == 200){
+							alert("Added receiver address successfully!");
+						} else {
+							alert("Added receiver address unsuccessfully!");
+						}
+					},
+					error: function (xhr) {
+						alert("An unknown exception occurred during adding address！" + xhr.message);
+					}
+				});
+			});
+		</script>
 	</body>
 
 </html>
